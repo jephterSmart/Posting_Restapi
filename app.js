@@ -47,7 +47,7 @@ app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization')//which headers will be used to access my resources
     next();
 })
-app.options('*',cors())
+app.use(cors())
 app.use((req,res,next) => {
     if(req.method === "OPTIONS")
     res.sendStatus(200);
@@ -69,12 +69,8 @@ mongoose.connect(process.env.MONGO_URI,
 {useNewUrlParser: true})
 .then(result => {
    
- const server = app.listen(process.env.PORT || 8080)
-const io = require('./socket').init(server);
-io.on('connection', socket =>{
-    
-    
-})
+ app.listen(process.env.PORT || 8080)
+
     })
 .catch(err =>{
     throw err
