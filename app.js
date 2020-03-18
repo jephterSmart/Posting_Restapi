@@ -40,16 +40,17 @@ app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'));
 // app.use(compression());
 app.use('/images',express.static(path.join(__dirname,'images')));
 
-app.use((req,res,next) => {
-    if(req.method === "OPTIONS")
-    res.send(200);
-    else next();
-})
+
 app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin','*')//who will access my resources
     res.setHeader('Access-Control-Allow-Methods','GET, PUT, PATCH, POST, DELETE, OPTIONS')//which method will be used to access my resources
     res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization')//which headers will be used to access my resources
     next();
+})
+app.use((req,res,next) => {
+    if(req.method === "OPTIONS")
+    res.sendStatus(200);
+    else next();
 })
 app.use('/feed',feedRoute);
 app.use('/auth',authRoute);
