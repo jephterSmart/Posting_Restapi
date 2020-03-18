@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const multer = require('multer')
 const uuidv4 = require('uuid/v4');
 const helmet = require('helmet');
-const compression = require('compression');
+const cors = require('cors')
 
 
 const feedRoute = require('./routes/feed')
@@ -36,8 +36,8 @@ const fileFilter = function(req,file,cb) {
 
 app.use(bodyParser.json());
 app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'));
-// app.use(helmet());
-// app.use(compression());
+//  app.use(helmet());
+
 app.use('/images',express.static(path.join(__dirname,'images')));
 
 
@@ -47,6 +47,7 @@ app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization')//which headers will be used to access my resources
     next();
 })
+app.options('*',cors())
 app.use((req,res,next) => {
     if(req.method === "OPTIONS")
     res.sendStatus(200);
