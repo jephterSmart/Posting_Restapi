@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const multer = require('multer')
 const uuidv4 = require('uuid/v4');
+const helmet = require('helmet');
+const compression = require('compression');
 
 
 const feedRoute = require('./routes/feed')
@@ -33,7 +35,9 @@ const fileFilter = function(req,file,cb) {
 
 
 app.use(bodyParser.json());
-app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'))
+app.use(multer({storage:fileStorage,fileFilter:fileFilter}).single('image'));
+app.use(helmet());
+app.use(compression());
 app.use('/images',express.static(path.join(__dirname,'images')));
 
 app.use((req,res,next) => {
@@ -54,7 +58,7 @@ app.use((error,req,res,next) =>{
         error:error.errors
     });
 })
-mongoose.connect('mongodb+srv://jeff:mobile165@cluster0-l1zxn.mongodb.net/messages?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_URI,
 {useNewUrlParser: true})
 .then(result => {
    
