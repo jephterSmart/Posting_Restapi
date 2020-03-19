@@ -104,8 +104,8 @@ exports.createPost = (req,res,next) =>{
      return user.save()
     })
     .then(result => {
-       const io = socket.getIO()
-       io.emit('posts',{action:'create', post:updatedPost});
+      //  const io = socket.getIO()
+      //  io.emit('posts',{action:'create', post:updatedPost});
         res.status(201).json({
             message:'post created',
             post:updatedPost,
@@ -167,7 +167,7 @@ exports.updatePost = (req, res, next) => {
         return  result.populate('creator','name _id').execPopulate() 
       })
       .then(updatePost => {
-          socket.getIO().emit('posts',{action:'update', post:updatePost})
+          // socket.getIO().emit('posts',{action:'update', post:updatePost})
       
         res.status(200).json({ message: 'Post updated!', post: updatePost });
       })
@@ -214,7 +214,7 @@ exports.updatePost = (req, res, next) => {
        return user.save()
      })
      .then(result =>{
-       socket.getIO().emit('posts',{action:'delete',post:postId})
+    //    socket.getIO().emit('posts',{action:'delete',post:postId})
        res.status(200).json({
         message: 'post deleted',
         post: post
