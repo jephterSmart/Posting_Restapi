@@ -11,7 +11,7 @@ const cors = require('cors')
 
 const feedRoute = require('./routes/feed')
 const authRoute = require('./routes/auth')
-
+const socket = require('./socket')
 const app = express();
 const fileStorage = multer.diskStorage({
     destination: function(req,file,cb){
@@ -69,7 +69,8 @@ mongoose.connect(process.env.MONGO_URI,
 {useNewUrlParser: true})
 .then(result => {
    
- app.listen(process.env.PORT || 8080)
+server = app.listen(process.env.PORT || 8080)
+socket.init(server)
 
     })
 .catch(err =>{
